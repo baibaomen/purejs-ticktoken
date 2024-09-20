@@ -1,0 +1,23 @@
+{
+  "name": "purejs-ticktoken",
+  "version": "1.0.0",
+  "description": "PureJS implementation of Tiktoken for calculating token count in OpenAI models.",
+  "main": "purejs-ticktoken.js",
+  "scripts": {
+    "build": "browserify encode.js -o purejs-ticktoken.js -t babelify --presets @babel/preset-env",
+    "start": "npm run build && http-server -o demo.html"
+  },
+  "dependencies": {
+    "js-tiktoken": "latest",
+    "purejs-ticktoken": "file:"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
+    "http-server": "^14.0.0"
+  },
+  "author": "baibaomen@gmail.com",
+  "license": "MIT"
+}

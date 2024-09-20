@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PureJS-Tiktoken Demo</title>
+    <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+
+    <h1>PureJS-Tiktoken Demo</h1>
+
+    <div class="container">
+        <!-- getEncodingNameForModel Example Card -->
+        <div class="card">
+            <h2>getEncodingNameForModel Example</h2>
+            <input type="text" id="modelInput" placeholder="Enter model name: e.g., gpt-4o, gpt-3.5-turbo">
+            <button class="get-encoding-btn" onclick="getEncodingName()">Get Encoding Name</button>
+            <div id="encodingNameResult" class="result-box">Encoding name: </div>
+        </div>
+
+        <!-- Spacer between two cards -->
+        <div class="card-separator"></div>
+
+        <!-- getEncoding Example Card -->
+        <div class="card">
+            <h2>getEncoding Example</h2>
+            <label for="modelSelect">Select model:</label>
+            <select id="modelSelect">
+                <option value="gpt2">GPT-2</option>
+                <option value="p50k_base">Davinci/Codex Models</option>
+                <option value="p50k_edit">Davinci Edit Models</option>
+                <option value="r50k_base">Curie/Babbage/Ada Models</option>
+                <option value="cl100k_base">GPT-3.5/GPT-4/Embedding Models</option>
+                <option value="o200k_base">GPT-4o Models</option>
+            </select>
+            <label for="inputText">Enter text:</label>
+            <textarea id="inputText" rows="6" placeholder="Enter text here..."></textarea>
+            <button class="encode-btn" onclick="encodeAndDecode()">Encode & Decode</button>
+
+            <!-- Display encoded and decoded results -->
+            <div class="result-container">
+                <div id="encodedLength">Token length: </div>
+                <div id="decodedCheck">Decoded matches original: </div>
+                <div id="encodedResult">Encoded tokens: </div>
+                <div id="decodedText">Decoded text: </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="purejs-ticktoken.js"></script>
+    <script>
+        function getEncodingName() {
+            const model = document.getElementById('modelInput').value;
+            const resultElement = document.getElementById('encodingNameResult');
+            try {
+                const encodingName = window.getEncodingNameForModel(model);
+                resultElement.innerText = 'Encoding name: ' + encodingName;
+            } catch (error) {
+                resultElement.innerText = 'Error: ' + error.message;
+            }
+        }
+
+        function encodeAndDecode() {
+            const text = document.getElementById('inputText').value;
+            const encoding = document.getElementById('modelSelect').value;
+            const enc = window.getEncoding(encoding); // Get the corresponding encoder
+
+            // Encode the text
+            const encoded = enc.encode(text);
+            
+            // Display encoded tokens and length
+            document.getElementById('encodedResult').innerText = 'Encoded tokens: ' + encoded;
+            document.getElementById('encodedLength').innerText = 'Token length: ' + encoded.length;
+
+            // Decode and check if it matches the original text
+            const decoded = enc.decode(encoded);
+            document.getElementById('decodedText').innerText = 'Decoded text: ' + decoded;
+
+            // Compare decoded text with original text
+            const isMatch = decoded === text ? "Yes" : "No";
+            document.getElementById('decodedCheck').innerText = 'Decoded matches original: ' + isMatch;
+        }
+    </script>
+
+</body>
+</html>
